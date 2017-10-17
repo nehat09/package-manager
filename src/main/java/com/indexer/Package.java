@@ -1,12 +1,13 @@
 package com.indexer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Package {
 
 	String name;
-	ArrayList<String> dependencies;
-	ArrayList<String> dependents;
+	List<String> dependencies;
+	List<String> dependents;
 
 	public Package(String name) {
 		this.name = name;
@@ -22,19 +23,19 @@ public class Package {
 		this.name = name;
 	}
 
-	public ArrayList<String> getDependecies() {
+	public List<String> getDependecies() {
 		return dependencies;
 	}
 
-	public void setDependecies(ArrayList<String> dependecies) {
+	public void setDependecies(List<String> dependecies) {
 		this.dependencies = dependecies;
 	}
 
-	public ArrayList<String> getDependants() {
+	public List<String> getDependants() {
 		return dependents;
 	}
 
-	public void setDependants(ArrayList<String> dependants) {
+	public void setDependants(List<String> dependants) {
 		this.dependents = dependants;
 	}
 }

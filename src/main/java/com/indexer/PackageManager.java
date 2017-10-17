@@ -1,20 +1,20 @@
 package com.indexer;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class PackageManager {
+public class PackageManager implements Indexer{
 	Map<String, Package> map;
-
+	
 	public PackageManager() {
 		this.map = new ConcurrentHashMap<String, Package>(100, (float) 0.75, 100);
 	}
-
+	
 	/**
 	 * Index function for adding to map of packages. If successful indexing occurs,
 	 * function returns true. On failure, returns false. */
-	public boolean index(String pkg, ArrayList<String> deps) {
+	public boolean index(String pkg, List<String> deps) {
 		Package p = new Package(pkg);
 
 		// add if deps are not null
@@ -61,7 +61,7 @@ public class PackageManager {
 	 * Private Function for checking if dependencies provided are present
 	 * in the map.
 	 */
-	boolean isDepsPresent(ArrayList<String> deps) {
+	boolean isDepsPresent(List<String> deps) {
 		for (String d : deps) {
 			if (!map.containsKey(d)) {
 				return false;
@@ -73,10 +73,10 @@ public class PackageManager {
 	/**
 	 * Private Function for updating the state of dependents on indexing.
 	 */
-	void updateDependentsOnIndex(String pkg, ArrayList<String> deps) {
+	void updateDependentsOnIndex(String pkg, List<String> deps) {
 		for (String dep : deps) {
 			Package p = map.get(dep);
-			ArrayList<String> dependents = p.getDependants();
+			List<String> dependents = p.getDependants();
 			dependents.add(pkg);
 			p.setDependants(dependents);
 			map.put(dep, p);
@@ -88,11 +88,11 @@ public class PackageManager {
 	 */
 	void updateDependentsOnRemove(String pkg) {
 		// for all dependencies of pkg , remove pkg from their dependents
-		ArrayList<String> deps = map.get(pkg).getDependecies();
+		List<String> deps = map.get(pkg).getDependecies();
 
 		for (String dep : deps) {
 			Package p = map.get(dep);
-			ArrayList<String> dependents = p.getDependants();
+			List<String> dependents = p.getDependants();
 			dependents.remove(pkg);
 			p.setDependants(dependents);
 			map.put(dep, p);
