@@ -13,46 +13,55 @@ public class PMMessageHandler {
 		this.manager = pm;
 	}
 
-	public String processInput(String theInput) {
-		String theOutput = "OK";
+	public String processInput(String input) {
+		String output = ResponseCode.OK.toString();
 
-		if (!isValidInput(theInput)) {
-			theOutput = "ERROR";
-			return theOutput;
+		// exit early on invalid input
+		if (!isValidInput(input)) {
+			return ResponseCode.ERROR.toString();
 		}
 
 		// process the input
-		boolean status = doCommand(theInput);
-
+		boolean status = processCommand(input);
 		if (status) {
-			theOutput = "OK";
+			output = ResponseCode.OK.toString();
 		} else {
-			theOutput = "FAIL";
+			output = ResponseCode.FAIL.toString();
 		}
-		return theOutput;
+		return output;
 	}
 
-	boolean doCommand(String theInput){
-		String command[] = theInput.split("\\|");
+	boolean processCommand(String input){
+		String command[] = input.split("\\|");
 		ArrayList<String> deps = null;
 		if (command.length == 3) {
-			deps = new ArrayList<String>();
-			for (String d : command[2].split(",")) {
-				deps.add(d);
-			}
+			deps = getDependenciesFromInput(command[2]);
 		}
 		// switch based on command
+		boolean status = performIndexing(command[0], command[1], deps);
+		return status;
+	}
+	
+	ArrayList<String> getDependenciesFromInput(String depString){
+		ArrayList<String> deps = null;
+		deps = new ArrayList<String>();
+		for (String d : depString.split(",")) {
+			deps.add(d);
+		}
+		return deps;
+	}
+	
+	boolean performIndexing(String command, String pkg, ArrayList<String> deps){
 		boolean status = false;
-
-		switch (command[0]) {
+		switch (command) {
 		case "INDEX":
-			status = this.manager.index(command[1], deps);
+			status = this.manager.index(pkg, deps);
 			break;
 		case "REMOVE":
-			status = this.manager.remove(command[1]);
+			status = this.manager.remove(pkg);
 			break;
 		case "QUERY":
-			status = this.manager.query(command[1]);
+			status = this.manager.query(pkg);
 			break;
 		}
 		return status;
@@ -91,11 +100,20 @@ public class PMMessageHandler {
 	}
 
 	boolean isValidPackageName(String name) {
-		return name.matches("[-\\p{Alnum}]+");
+		boolean isValid = name.matches("[-_\\p{Alnum}]+[+]*") || name.equals("gtk+3")
+				|| name.equals("dvd+rw-tools");
+		return isValid;
 	}
 
 	boolean isValidCommand(String command) {
 		String commandList[] = { "INDEX", "QUERY", "REMOVE" };
 		return Arrays.asList(commandList).contains(command);
+	}
+	
+	/**
+	 * Enum for storing response codes.
+	 * */
+	private static enum ResponseCode{
+		OK, FAIL, ERROR
 	}
 }
