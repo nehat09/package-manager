@@ -11,7 +11,7 @@ import com.indexer.PackageManager;
 /**
  * A thread class to handle multi-threaded requests on a socket.
  */
-public class PMServerThread implements Runnable{ //extends Thread {
+public class PMServerThread implements Runnable {
 	private Socket socket;
 	private int clientNumber;
 	private PackageManager manager;
@@ -24,12 +24,10 @@ public class PMServerThread implements Runnable{ //extends Thread {
 	}
 
 	public void run() {
-		PrintWriter out = null;
-		try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			) {
+		try (BufferedReader in = new BufferedReader(
+				new InputStreamReader(socket.getInputStream()));
+			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);) {
 
-			out	= new PrintWriter(socket.getOutputStream(), true);
-			
 			PMMessageHandler handler = new PMMessageHandler(this.manager);
 
 			while (true) {
@@ -43,7 +41,6 @@ public class PMServerThread implements Runnable{ //extends Thread {
 			}
 		} catch (IOException e) {
 			log("Error handling client# " + clientNumber + ": " + e);
-			out.close();
 		} finally {
 			try {
 				socket.close();
