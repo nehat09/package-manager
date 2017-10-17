@@ -17,11 +17,11 @@ public class TestPMServerThread {
 	 */
 	@Test
 	public void testServer() throws Exception {
-		final PMApplicationServer server = new PMApplicationServer(TEST_PORT);
+		final PMApplicationServer server = PMApplicationServer.getInstance();
 		new Thread() {
 			public void run() {
 				try {
-					server.start();
+					server.start(TEST_PORT);
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}

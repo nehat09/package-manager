@@ -7,14 +7,13 @@ import java.util.concurrent.Executors;
 import com.indexer.PackageManager;
 
 public class PMApplicationServer {
+	private static final int DEFAULT_PORT = 8080;
+	private static PMApplicationServer _theServer = null;
+	private final static ExecutorService service = Executors.newCachedThreadPool();
 
-	int port;
-	PackageManager manager;
-	
-	final static ExecutorService service = Executors.newCachedThreadPool();
+	private PackageManager manager;
 
-	public PMApplicationServer(int port) {
-		this.port = port;
+	private PMApplicationServer() {
 		this.manager = new PackageManager();
 	}
 
@@ -22,12 +21,29 @@ public class PMApplicationServer {
 	 * Application server which is multi-threaded.
 	 */
 	public static void main(String[] args) throws Exception {
-		int port = Integer.parseInt(args[0]);
-		PMApplicationServer server = new PMApplicationServer(port);
-		server.start();
+		int port = DEFAULT_PORT;
+		if (args.length > 0){
+			port = Integer.parseInt(args[0]);
+		}
+		
+		PMApplicationServer server = PMApplicationServer.getInstance();
+		server.start(port);
+	}
+	
+	/**
+	 * GetInstance method to ensure a singleton instance
+	 * is created if not already created. */
+	public static PMApplicationServer getInstance(){
+		if (_theServer == null){
+			_theServer = new PMApplicationServer();
+		}
+		return _theServer;
 	}
 
-	public void start() throws Exception {
+	/**
+	 * Server start method. Begin a server socket and listens for
+	 * new connections. */
+	public void start(int port) throws Exception {
 		System.out.println("The package manager server is running.");
 		int clientNumber = 0;
 		ServerSocket listener = new ServerSocket(port, 1000);
