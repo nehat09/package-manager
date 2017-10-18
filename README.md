@@ -43,4 +43,18 @@ IMPORTANT: You will need Java 8 Runtime and Maven installed on your system, with
 ```
 4. The application is running on port 8080 for accepting messages.
 
+**Design**
+*PMApplicationServer class* - is the entry point of application. Hence, a Singleton instance. This starts the ServerSocket and listens for incoming connections.
+
+*PMServerThread class* - is created as a new thread for every new connection.
+
+*PMMessageHandler class* - handles the incoming messages. This is essentially the protocol of communication.
+
+*Indexer interface* - is an interface for providing the indexing functions. i.e Index, Remove, Query.
+
+*PackageManager class* - is the implementation of the Indexer. It has a ConcurrentHashMap of <package, Package (Object)>. The Java ConcurrentHashMap supports thread-safe highly concurrent updation and retrieval.
+
+*Package class* - stores the state of each package, that is, name of package, list of dependencies and list of dependent packages (list of strings). 
+
+
  
