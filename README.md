@@ -1,4 +1,4 @@
-package-manager is an indexer for packages, which keeps track of package dependencies. *Packages* are executables or libraries that can be installed in a system, often via a package manager such as apt, RPM, or Homebrew. Many packages use libraries that are also made available as packages themselves, so usually a package will require you to install its dependencies before you can install it on your system.
+**package-manager** is an indexer for packages, which keeps track of package dependencies. *Packages* are executables or libraries that can be installed in a system, often via a package manager such as apt, RPM, or Homebrew. Many packages use libraries that are also made available as packages themselves, so usually a package will require you to install its dependencies before you can install it on your system.
 
 The package-manager is a TCP server application which starts on port 8080.
 
@@ -26,3 +26,17 @@ The following are response codes sent by the package-manager server:
 * OK - Sent if package was successfully indexed or removed(if package not present for removal, return OK). For query, if the package was present in index.
 * FAIL - Sent if package was not successfully indexed or removed. For query, if package is not present in index.
 * ERROR - If the command input was invalid, that is, does not follow the above pattern.
+
+HOW TO RUN ?
+
+IMPORTANT: You will need Java 8 Runtime and Maven installed on your system, with java and mvn on your system path.
+
+1. Download the project to a directory, for example /package-manager.
+2. Run following commands:
+	>> cd package-manager
+	>> mvn package
+3. A JAR will be generated at /target. Run the jar as:
+	>> java -jar target/<package-manager>.jar 
+4. The application is running on port 8080 for accepting messages.
+
+ 
