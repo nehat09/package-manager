@@ -29,14 +29,18 @@ The following are response codes sent by the package-manager server:
 
 HOW TO RUN ?
 
-IMPORTANT: You will need Java 8 Runtime and Maven installed on your system, with java and mvn on your system path.
+IMPORTANT: You will need Java 8 Runtime and Maven installed on your system, with *java* and *mvn* on your system path.
 
 1. Download the project to a directory, for example /package-manager.
 2. Run following commands:
+```
 	>> cd package-manager
 	>> mvn package
+```
 3. A JAR will be generated at /target. Run the jar as:
+```
 	>> java -jar target/<package-manager>.jar 
+```
 4. The application is running on port 8080 for accepting messages.
 
  
