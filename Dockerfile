@@ -8,3 +8,5 @@ WORKDIR /opt/package-manager/
 COPY target/package-indexer-0.0.1-SNAPSHOT.jar ./
 
 CMD ["java", "-jar", "package-indexer-0.0.1-SNAPSHOT.jar"]
+
+EXPOSE 8080

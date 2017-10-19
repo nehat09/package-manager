@@ -43,6 +43,14 @@ IMPORTANT: You will need Java 8 Runtime and Maven installed on your system, with
 ```
 4. The application is running on port 8080 for accepting messages.
 
+*How to run using the Dockerfile?*
+
+At the same level as the Dockerfile, run the following:
+```
+	>> docker build -t package-manager .
+	>> docker run -p <your-port>:8080 package-manager
+```
+
 **Design**
 
 *PMApplicationServer class* - is the entry point of application. Hence, a Singleton instance. This starts the ServerSocket and listens for incoming connections.
